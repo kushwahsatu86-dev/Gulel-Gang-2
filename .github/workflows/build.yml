@@ -38,3 +38,13 @@ jobs:
             DIR=$(dirname "$(find project -name settings.gradle | head -1)")
             echo "DIR=$DIR" >> $GITHUB_ENV
           fi
+
+      - name: Build debug APK
+        run: gradle --no-daemon -p "$DIR" :app:assembleDebug
+
+      - name: Upload APK
+        uses: actions/upload-artifact@v4
+        with:
+          name: Gulel-Gang-APK
+          path: ${{ env.DIR }}/app/build/outputs/apk/debug/*.apk
+          if-no-files-found: error
